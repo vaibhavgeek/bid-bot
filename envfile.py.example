@@ -1,0 +1,5 @@
+PRIVATE_KEY="Ethereum Private Key, Treat this account as a hot wallet."
+RPC_POLYGON="Get the polygon rpc endpoint from infura.io"
+RPC_RINKEBY="Get the rinkeby rpc endpoint from infura.io"
+GRAPH_POLYGON="https://api.thegraph.com/subgraphs/name/zestymarket/zesty-market-graph-matic"
+GRAPH_RINKEBY="https://api.thegraph.com/subgraphs/name/zestymarket/zesty-market-graph-rinkeby"

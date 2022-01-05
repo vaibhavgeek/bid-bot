@@ -1,6 +1,18 @@
 # Bid Bot
 Bid Bot is an auto-bidding bot for advertisers. 
 
+## Quickstart
+1. Set up python on your computer. Bid Bot requires `python >= 3.5`.
+
+2. Set up a python vm and install dependencies. We use conda here.
+```shell
+$ conda create --name bidbot python=3.8
+$ conda activate bidbot
+$ pip install -r requirements.txt
+```
+
+3. Rename `envfile.py.example` to `envfile.py` and setup the values accordingly.
+
 ## Motivations
 It is very troublesome to bid on Zesty Market. 
 Most advertisers are used to putting forth an advertising budget and getting a report on their campaigns.
@@ -39,7 +51,7 @@ This is to help fund the maintenance of the bot and the gas used for making tran
 1. The standalone version is designed for hackers to implement bidding strategies for advertisers. 
 People can create their own services on top of Zesty Market and charge a fee for usage.
 
-2. This will be a node program which will get data from thegraph and bid accordingly via an EOA. 
+2. This will be a python program which will get data from thegraph and bid accordingly via an EOA. 
 This EOA should be treated as hot storage as it will be need to be hosted on some server or computer actively connected to the internet.
 
 3. This repo should host various bidding strategies for people to play with.
