@@ -13,6 +13,11 @@ $ pip install -r requirements.txt
 
 3. Rename `envfile.py.example` to `envfile.py` and setup the values accordingly.
 
+4. You should be able to run strategies specified in `main.py` with
+```shell
+$ python main.py
+```
+
 ## Motivations
 It is very troublesome to bid on Zesty Market. 
 Most advertisers are used to putting forth an advertising budget and getting a report on their campaigns.
