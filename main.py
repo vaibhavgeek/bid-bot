@@ -2,6 +2,8 @@ import gql
 import web3
 import os
 import envfile
+import importlib
+from strategies.DummyStrategy import DummyStrategy
 
 class BidBot(object):
     def __init__(
@@ -24,7 +26,9 @@ class BidBot(object):
         fetch_interval : int
             The time to fetch and process data (default is 600 which is 10 minutes)
         """
-        self.strategy = strategy
+        module = importlib.import_module("strategies." + strategy)
+        classobj = getattr(module, strategy)
+        self.strategy = classobj()
         self.private_key = envfile.PRIVATE_KEY
         self.network = network
         self.raw_data = None
