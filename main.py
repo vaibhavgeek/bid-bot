@@ -60,9 +60,9 @@ class BidBot(object):
         # TODO: this might need to be done asynchronously
         while True:
             try:
-                self.fetch_data()
-                self.process_data()
-                self.act()
+                abc = self.fetch_data()
+                defa = self.process_data(abc)
+                return self.act(defa)
 
             except Exception as e:
                 print(e)
