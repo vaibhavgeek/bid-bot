@@ -1,4 +1,4 @@
-from strategies.quries import DUMMY_QUERY
+from strategies.graphQL import DUMMY_QUERY
 from .BaseStrategy import BaseStrategy
 from eth_keys import keys
 from envfile import *
