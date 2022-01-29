@@ -1,5 +1,3 @@
-import gql
-import web3
 import os
 import envfile
 import importlib
@@ -39,6 +37,7 @@ class BidBot(object):
         Fetch data using strategy defined
         """
         self.raw_data = self.strategy.fetch_data()
+        print(self.raw_data)
 
     def process_data(self):
         """
@@ -51,7 +50,7 @@ class BidBot(object):
         Makes a decision based on processed data and updates 
         processed data based on results
         """
-        self.processed_data = self.strategy.act(self.processed_data)
+        self.processed_data = self.strategy.act(self.processed_dat)
 
     def run(self):
         """
@@ -60,9 +59,9 @@ class BidBot(object):
         # TODO: this might need to be done asynchronously
         while True:
             try:
-                abc = self.fetch_data()
-                defa = self.process_data(abc)
-                return self.act(defa)
+                auctions = self.fetch_data()
+                biddings = self.process_data()
+                return self.act()
 
             except Exception as e:
                 print(e)

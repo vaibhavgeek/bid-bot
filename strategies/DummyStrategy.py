@@ -6,7 +6,6 @@ import json
 import codecs
 from web3 import Web3, HTTPProvider
 import requests
-import quries
 
 class DummyStrategy(BaseStrategy):
     w3 = Web3(HTTPProvider(RPC_POLYGON))
@@ -25,7 +24,8 @@ class DummyStrategy(BaseStrategy):
             self.zesty = self.w3.eth.contract(
                 address=POLYGON_CONTRACT_ADDRESS, abi=self.EIP20_ABI['result'])
             get_price_txn = self.zesty.functions.getSellerAuctionPrice(
-                auction["id"]).call()
+                int(auction["id"])).call()
+            print(get_price_txn)
             if get_price_txn > BIDDING_AMOUNT:
                 biddings.append(auction)
 
@@ -48,6 +48,7 @@ class DummyStrategy(BaseStrategy):
                 get_price_txn_buy, private_key=PRIVATE_KEY)
             value = self.w3.eth.send_raw_transaction(
                 signed_txn.rawTransaction)
+            print("Congratulations bid placed for id #{}".format(bid["id"]))
 
 
 
