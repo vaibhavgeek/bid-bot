@@ -28,7 +28,7 @@ class DummyStrategy(BaseStrategy):
             print(get_price_txn)
             if get_price_txn > BIDDING_AMOUNT:
                 biddings.append(auction)
-
+            return biddings
 
     def act(self, biddings):
         for bid in biddings:

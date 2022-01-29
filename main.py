@@ -50,7 +50,7 @@ class BidBot(object):
         Makes a decision based on processed data and updates 
         processed data based on results
         """
-        self.processed_data = self.strategy.act(self.processed_dat)
+        self.processed_data = self.strategy.act(self.processed_data)
 
     def run(self):
         """
