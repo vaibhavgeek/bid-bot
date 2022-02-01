@@ -37,7 +37,6 @@ class BidBot(object):
         Fetch data using strategy defined
         """
         self.raw_data = self.strategy.fetch_data()
-        print(self.raw_data)
 
     def process_data(self):
         """

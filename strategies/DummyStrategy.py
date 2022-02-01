@@ -6,14 +6,15 @@ import json
 import codecs
 from web3 import Web3, HTTPProvider
 import requests
-
+import time
+import logging
 class DummyStrategy(BaseStrategy):
     w3 = Web3(HTTPProvider(RPC_POLYGON))
     f = open("ABI/api.json")
     EIP20_ABI = json.load(f)
     nonce = 0
     def fetch_data(self):
-        data = requests.post(GRAPH_POLYGON,"",json={"query": DUMMY_QUERY})
+        data = requests.post(GRAPH_POLYGON,"",json={"query": DUMMY_QUERY.format(str(time.time()))})
         auctions = json.loads(data.text)
         auctions = auctions["data"]["sellerAuctions"]
         return auctions
@@ -25,30 +26,34 @@ class DummyStrategy(BaseStrategy):
                 address=POLYGON_CONTRACT_ADDRESS, abi=self.EIP20_ABI['result'])
             get_price_txn = self.zesty.functions.getSellerAuctionPrice(
                 int(auction["id"])).call()
-            print(get_price_txn)
-            if get_price_txn > BIDDING_AMOUNT:
+            ipfs_hash = auction["sellerNFTSetting"]["tokenData"]["uri"]
+            req = requests.get("https://ipfs.zesty.market/ipfs/{}".format(ipfs_hash))
+            format = (json.loads(req.text))["format"]
+            if get_price_txn > BIDDING_AMOUNT and format == BUYER_FORMAT:
                 biddings.append(auction)
             return biddings
 
     def act(self, biddings):
+        bid_ids = []
         for bid in biddings:
-            private_key_bytes = self.w3.toBytes(hexstr=PRIVATE_KEY)  
-            wallet = keys.PrivateKey(private_key_bytes)
-            address = wallet.public_key.to_checksum_address()
-            nonce = self.w3.eth.get_transaction_count(address)
+            bid_ids.append(int(bid["id"]))
+        private_key_bytes = self.w3.toBytes(hexstr=PRIVATE_KEY)  
+        wallet = keys.PrivateKey(private_key_bytes)
+        address = wallet.public_key.to_checksum_address()
+        nonce = self.w3.eth.get_transaction_count(address)
         
-            get_price_txn_buy = self.zesty.functions.sellerAuctionBidBatch(
-            bid["id"], BUYER_CAMPAIGN_ID).buildTransaction({
-                'gas': 70000,
+        get_price_txn_buy = self.zesty.functions.sellerAuctionBidBatch(
+            bid_ids, BUYER_CAMPAIGN_ID).buildTransaction({
+                'gas': self.w3.eth.generate_gas_price(),
                 'gasPrice': self.w3.toWei('1', 'gwei'),
                 'from': address,
                 'nonce': nonce
             })
-            signed_txn = self.w3.eth.account.sign_transaction(
+        signed_txn = self.w3.eth.account.sign_transaction(
                 get_price_txn_buy, private_key=PRIVATE_KEY)
-            value = self.w3.eth.send_raw_transaction(
+        value = self.w3.eth.send_raw_transaction(
                 signed_txn.rawTransaction)
-            print("Congratulations bid placed for id #{}".format(bid["id"]))
+        logging.info("Congratulations bid placed for id #{}".format(bid["id"]))
 
 
 

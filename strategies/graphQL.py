@@ -1,6 +1,6 @@
 DUMMY_QUERY = '''
 {
-  sellerAuctions(where: { auctionTimeStart_lt:1643127004, auctionTimeEnd_gt  : 1643127004, cancelled: false , buyerCampaignsApproved_not_contains: [true]}){
+  sellerAuctions(where: { auctionTimeStart_lt: {time}, auctionTimeEnd_gt  : {time}, cancelled: false , buyerCampaignsApproved_not_contains: [true]}){
     id,
     seller,
     cancelled,
@@ -9,7 +9,14 @@ DUMMY_QUERY = '''
     pricePending,
     currency,
     buyerCampaignsPending,
-    buyerCampaignsApproved
+    buyerCampaignsApproved,
+    sellerNFTSetting {
+      id
+      tokenData {
+        id
+        uri
+      }
+    }
   }
 }
 '''
